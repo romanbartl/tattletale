@@ -167,10 +167,11 @@ public class Main
       this.failOnInfo = false;
       this.failOnWarn = false;
       this.failOnError = false;
-      this.deleteOutputDirectory = true;
+      this.deleteOutputDirectory = false;
       this.reports = null;
       this.scan = ".jar,.war,.ear";
-
+      
+      
       this.dependencyReports = new ArrayList<Class>();
       addDependencyReport(ClassDependsOnReport.class);
       addDependencyReport(ClassDependantsReport.class);
@@ -371,7 +372,8 @@ public class Main
    {
       this.scan = scan;
    }
-
+   
+   
    /**
     * Execute
     *
@@ -609,7 +611,7 @@ public class Main
 
          if (scanner != null)
          {
-            Archive archive = scanner.scan(file, gProvides, known, blacklistedSet);
+            Archive archive = scanner.scan(file, gProvides, known, blacklistedSet); //java.ioIOEception: type 18
             if (archive != null)
             {
                SortedSet<Location> locations = locationsMap.get(archive.getName());
@@ -1089,13 +1091,19 @@ public class Main
                main.setExcludes(args[arg].substring(args[arg].indexOf("=") + 1));
                arg++;
             }
+            else if (args[arg].startsWith("DOD="))
+            {
+               main.setDeleteOutputDirectory(true);
+               arg++;
+            }
             main.setSource(args[arg]);
             main.setDestination(args.length > arg + 1 ? args[arg + 1] : ".");
             main.setFailOnInfo(false);
             main.setFailOnWarn(false);
             main.setFailOnError(false);
-            main.setDeleteOutputDirectory(true);
-
+            //main.setDeleteOutputDirectory(false);
+            
+            
             main.execute();
          }
          catch (Exception e)
@@ -1326,23 +1334,26 @@ public class Main
          File outputDirFile = new File(outputDir);
 
          if (outputDirFile.exists())
-         {
-            if (deleteOutputDirectory)
-            {
-               if (!outputDirFile.equals(new File(".")))
-               {
-                  recursiveDelete(outputDirFile);
-               }
-            }
-            else
-            {
-               throw new IOException("Directory: " + outputDir + " exists");
-            }
+         {	
+        	 if (outputDirFile.list().length != 0) 
+         	 {  		
+         		if (deleteOutputDirectory)
+         		{
+         			if (!outputDirFile.equals(new File(".")))
+         			{
+         				recursiveDelete(outputDirFile);
+         			}
+         		}
+         		else
+         		{
+         			throw new IOException("Directory is not empty!");
+         		}
+         	 }
          }
-
-         if (!outputDirFile.equals(new File(".")) && !outputDirFile.mkdirs())
-         {
-            throw new IOException("Cannot create directory: " + outputDir);
+         else
+         { 
+        	if(!outputDirFile.equals(new File(".")) && !outputDirFile.mkdirs())
+        		throw new IOException("Cannot create directory: " + outputDir);
          }
 
          return outputDir;
