@@ -53,6 +53,7 @@ import org.jboss.tattletale.reporting.EliminateJarsReport;
 import org.jboss.tattletale.reporting.GraphvizReport;
 import org.jboss.tattletale.reporting.InvalidVersionReport;
 import org.jboss.tattletale.reporting.JarReport;
+import org.jboss.tattletale.reporting.JSONReport;
 import org.jboss.tattletale.reporting.MultipleJarsReport;
 import org.jboss.tattletale.reporting.MultipleLocationsReport;
 import org.jboss.tattletale.reporting.NoVersionReport;
@@ -989,6 +990,9 @@ public class Main
       String outputDir = reportSetBuilder.getOutputDir();
       Dump.generateIndex(dependencyReportSet, generalReportSet, archiveReports, customReportSet, outputDir);
       Dump.generateCSS(outputDir);
+      
+      
+      JSONReport.generateJSON(dependencyReportSet, generalReportSet, archiveReports, customReportSet, outputDir);
 
       if (failOnInfo || failOnWarn || failOnError)
       {
