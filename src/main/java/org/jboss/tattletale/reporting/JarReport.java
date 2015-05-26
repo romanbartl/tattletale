@@ -355,4 +355,9 @@ public class JarReport extends ArchiveReport
    {
       this.filename = filename;
    }
+   
+   public void writeJsonReport(BufferedWriter bw) throws IOException
+   {
+	   
+   }
 }

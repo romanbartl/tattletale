@@ -246,4 +246,10 @@ public class TransitiveDependsOnReport extends CLSReport
          }
       }
    }
+   
+   public void writeJsonReport(BufferedWriter bw) throws IOException
+   {
+	   
+   }
+   
 }

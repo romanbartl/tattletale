@@ -67,7 +67,7 @@ public abstract class AbstractReport implements Report
    private Filter filterImpl;
 
    /** output filename */
-   protected static final String INDEX_HTML = "index.html";
+   protected static final String INDEX_JSON = "index.json";
 
    /**
     * Constructor
@@ -188,7 +188,7 @@ public abstract class AbstractReport implements Report
     */
    public String getIndexName()
    {
-      return INDEX_HTML;
+      return INDEX_JSON;
    }
 
    /**
@@ -202,7 +202,10 @@ public abstract class AbstractReport implements Report
       {
          createOutputDir(outputDirectory);
          BufferedWriter bw = getBufferedWriter();
-
+         
+         writeJsonReport(bw);
+         
+         /*
          writeHtmlHead(bw);
 
          writeHtmlBodyHeader(bw);
@@ -210,6 +213,7 @@ public abstract class AbstractReport implements Report
          writeHtmlBodyFooter(bw);
 
          writeHtmlFooter(bw);
+         */
 
          bw.flush();
          bw.close();
@@ -220,6 +224,8 @@ public abstract class AbstractReport implements Report
          e.printStackTrace(System.err);
       }
    }
+   
+   public abstract void writeJsonReport(BufferedWriter bw) throws IOException;
 
    /**
     * create the output directory
@@ -240,7 +246,7 @@ public abstract class AbstractReport implements Report
     */
    BufferedWriter getBufferedWriter() throws IOException
    {
-      return getBufferedWriter(INDEX_HTML);
+      return getBufferedWriter(INDEX_JSON);
    }
 
    /**
@@ -265,7 +271,6 @@ public abstract class AbstractReport implements Report
    {
       this.archives = archives;
    }
-
    /**
     * write the header of a html file.
     *
@@ -327,6 +332,7 @@ public abstract class AbstractReport implements Report
    {
       bw.write("</html>" + Dump.newLine());
    }
+ 
 
    /**
     * Comparable

@@ -404,4 +404,9 @@ public class GraphvizReport extends CLSReport
 
       return false;
    }
+   
+   public void writeJsonReport(BufferedWriter bw) throws IOException
+   {
+	   
+   }
 }

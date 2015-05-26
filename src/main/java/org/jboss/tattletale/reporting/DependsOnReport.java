@@ -211,5 +211,8 @@ public class DependsOnReport extends CLSReport
 
    }
 
-
+   public void writeJsonReport(BufferedWriter bw) throws IOException
+   {
+	   
+   }
 }

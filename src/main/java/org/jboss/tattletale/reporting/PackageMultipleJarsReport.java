@@ -186,4 +186,9 @@ public class PackageMultipleJarsReport extends AbstractReport
    {
       return new KeyFilter();
    }
+   
+   public void writeJsonReport(BufferedWriter bw) throws IOException
+   {
+	   
+   }
 }

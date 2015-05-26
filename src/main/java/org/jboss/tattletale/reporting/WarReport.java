@@ -134,4 +134,9 @@ public class WarReport extends NestableReport
    {
       this.fileName = fileName;
    }
+   
+   public void writeJsonReport(BufferedWriter bw) throws IOException
+   {
+	   
+   }
 }

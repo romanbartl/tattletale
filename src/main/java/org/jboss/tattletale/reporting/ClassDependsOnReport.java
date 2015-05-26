@@ -179,4 +179,9 @@ public class ClassDependsOnReport extends CLSReport
       bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
       bw.write("<p>" + Dump.newLine());
    }
+   
+   public void writeJsonReport(BufferedWriter bw) throws IOException
+   {
+	   
+   }
 }

@@ -216,5 +216,10 @@ public class AS7Report extends CLSReport
 
       return outputXml;
    }
+   
+   public void writeJsonReport(BufferedWriter bw) throws IOException
+   {
+	   
+   }
 
 }

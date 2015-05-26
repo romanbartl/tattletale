@@ -170,4 +170,9 @@ public class PackageDependsOnReport extends CLSReport
       }
       return result;
    }
+   
+   public void writeJsonReport(BufferedWriter bw) throws IOException
+   {
+	   
+   }
 }

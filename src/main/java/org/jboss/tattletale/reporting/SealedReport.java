@@ -171,4 +171,9 @@ public class SealedReport extends AbstractReport
    {
       return new BooleanFilter();
    }
+   
+   public void writeJsonReport(BufferedWriter bw) throws IOException
+   {
+	   
+   }
 }
