@@ -61,7 +61,7 @@ public class JSONReport
 	{
 	      try
 	      {
-	          FileWriter fw = new FileWriter(outputDir + "reports.json");
+	          FileWriter fw = new FileWriter(outputDir + "index.json");
 	          BufferedWriter bw = new BufferedWriter(fw, 8192);	
 	      
 		      generateJSONScript(bw, dependenciesReports, generalReports, archiveReports, customReports, outputDir);
@@ -127,7 +127,7 @@ public class JSONReport
 	            }
 				
 				scriptVar += "{\"name\":\"" + r.getName() + "\", ";
-				scriptVar += "\"link\":\"" + r.getDirectory() + "/" + fileBase + ".html\", ";
+				scriptVar += "\"link\":\"" + r.getDirectory() + "/" + fileBase + ".json\", ";
 				scriptVar += "\"severity\":\"" + ReportSeverity.getSeverityString(r.getSeverity()) + "\", ";
 				scriptVar += "\"statusColor\":\"" + ReportStatus.getStatusColor(r.getStatus()) + "\", ";
 				scriptVar += "\"titulSize\":\"" + getIndexHtmlSize(r) + "\"}";
