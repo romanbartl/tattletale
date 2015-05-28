@@ -24,6 +24,7 @@ package org.jboss.tattletale.reporting;
 import org.jboss.tattletale.Version;
 import org.jboss.tattletale.core.Archive;
 import org.jboss.tattletale.core.Location;
+import org.jboss.tattletale.reporting.abstracts.AbstractReport;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -36,6 +37,9 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
+
+import org.jboss.tattletale.reporting.common.*;
+import org.jboss.tattletale.reporting.interfaces.*;
 
 /**
  * OSGi report
@@ -145,89 +149,84 @@ public class OSGiReport extends AbstractReport
       File archiveOutput = new File(getOutputDirectory(), archive.getName());
       archiveOutput.mkdirs();
 
-      FileWriter rfw = new FileWriter(archiveOutput.getAbsolutePath() + File.separator + "index.html");
+      FileWriter rfw = new FileWriter(archiveOutput.getAbsolutePath() + File.separator + "index.xml");
       BufferedWriter rbw = new BufferedWriter(rfw, 8192);
-      rbw.write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-               + "\"http://www.w3.org/TR/html4/loose.dtd\">" + Dump.newLine());
-      rbw.write("<html>" + Dump.newLine());
-      rbw.write("<head>" + Dump.newLine());
+      rbw.write("<?xml version=\"1.0\" encoding=\"utf-8\"?> "+ Dump.newLine());
+      rbw.write("<main>" + Dump.newLine());
+      rbw.write("<info>" + Dump.newLine());
       rbw.write("  <title>" + Version.FULL_VERSION + ": " + NAME + " - " + archive.getName()
                + "</title>" + Dump.newLine());
-      rbw.write("  <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">" + Dump.newLine());
-      rbw.write("  <link rel=\"stylesheet\" type=\"text/css\" href=\"../../style.css\">" + Dump.newLine());
-      rbw.write("</head>" + Dump.newLine());
-      rbw.write("<body>" + Dump.newLine());
+    
+      rbw.write("</info>" + Dump.newLine());
+      rbw.write("<reporting>" + Dump.newLine());
       rbw.write(Dump.newLine());
 
       rbw.write("<h1>" + NAME + " - " + archive.getName() + "</h1>" + Dump.newLine());
 
-      rbw.write("<a href=\"../index.html\">Back</a>" + Dump.newLine());
-      rbw.write("<p>" + Dump.newLine());
+      rbw.write("../index.xml" + Dump.newLine());
+     
 
-      rbw.write("<table>" + Dump.newLine());
+      rbw.write("<elements>" + Dump.newLine());
 
-      rbw.write("  <tr>" + Dump.newLine());
-      rbw.write("     <th>Field</th>" + Dump.newLine());
-      rbw.write("     <th>Value</th>" + Dump.newLine());
-      rbw.write("  </tr>" + Dump.newLine());
+    
+      //rbw.write("     <th>Field</th>" + Dump.newLine());
+      //rbw.write("     <th>Value</th>" + Dump.newLine());
+     
 
-      rbw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-      rbw.write("     <td>OSGi</td>" + Dump.newLine());
+      rbw.write("  <element>" + Dump.newLine());
+      rbw.write("     <t>OSGi</t>" + Dump.newLine());
       if (archive.isOSGi())
       {
-         rbw.write("     <td style=\"color: green;\">Yes</td>" + Dump.newLine());
+         rbw.write("     <Status>Yes</Status>" + Dump.newLine());
       }
       else
       {
-         rbw.write("     <td style=\"color: red;\">No</td>" + Dump.newLine());
+         rbw.write("     <Status>No</Status>" + Dump.newLine());
       }
-      rbw.write("  </tr>" + Dump.newLine());
+      rbw.write("  </element>" + Dump.newLine());
 
-      rbw.write("  <tr class=\"roweven\">" + Dump.newLine());
-      rbw.write("     <td>Manifest</td>" + Dump.newLine());
-      rbw.write("     <td><pre>");
+      rbw.write("  <element>" + Dump.newLine());
+      rbw.write("     <Field>Manifest</Field>" + Dump.newLine());
+      rbw.write("     <Value>");
 
       if (archive.getManifest() != null)
       {
          for (String s : archive.getManifest())
          {
             rbw.write(s);
-            rbw.write("<br>");
          }
       }
 
-      rbw.write("</pre></td>" + Dump.newLine());
-      rbw.write("  </tr>" + Dump.newLine());
+      rbw.write("</Value>" + Dump.newLine());
+      rbw.write("  </element>" + Dump.newLine());
 
       if (!archive.isOSGi())
       {
-         rbw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-         rbw.write("     <td>OSGi Manifest</td>" + Dump.newLine());
-         rbw.write("     <td><pre>");
+         rbw.write("  <element>" + Dump.newLine());
+         rbw.write("     <Field>OSGi Manifest</Field>" + Dump.newLine());
+         rbw.write("     <Value>");
 
          if (osgiInformation != null && osgiInformation.size() > 0)
          {
             for (String anOsgiInformation : osgiInformation)
             {
                rbw.write(anOsgiInformation);
-               rbw.write("<br>");
+              
             }
          }
 
-         rbw.write("</pre></td>" + Dump.newLine());
-         rbw.write("  </tr>" + Dump.newLine());
+         rbw.write("</Value>" + Dump.newLine());
+         rbw.write("  </element>" + Dump.newLine());
       }
 
-      rbw.write("</table>" + Dump.newLine());
+      rbw.write("</elements>" + Dump.newLine());
 
       rbw.write(Dump.newLine());
-      rbw.write("<p>" + Dump.newLine());
-      rbw.write("<hr>" + Dump.newLine());
-      rbw.write("Generated by: <a href=\"http://www.jboss.org/tattletale\">" +
-               Version.FULL_VERSION + "</a>" + Dump.newLine());
+     
+      rbw.write("Generated by:  http://www.jboss.org/tattletale");
       rbw.write(Dump.newLine());
-      rbw.write("</body>" + Dump.newLine());
-      rbw.write("</html>" + Dump.newLine());
+      rbw.write("</reporting>" + Dump.newLine());
+      rbw.write("</main>" + Dump.newLine());
 
       rbw.flush();
       rbw.close();
@@ -422,14 +421,14 @@ public class OSGiReport extends AbstractReport
     */
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Archive</th>" + Dump.newLine());
+     
+     /* bw.write("     <th>Archive</th>" + Dump.newLine());
       bw.write("     <th>OSGi</th>" + Dump.newLine());
       bw.write("     <th>Report</th>" + Dump.newLine());
-      bw.write("     <th>Manifest</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+      bw.write("     <th>Manifest</th>" + Dump.newLine());*/
+ 
 
       boolean odd = true;
 
@@ -442,19 +441,15 @@ public class OSGiReport extends AbstractReport
          int finalDot = archiveName.lastIndexOf(".");
          String extension = archiveName.substring(finalDot + 1);
 
-         if (odd)
-         {
-            bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-         }
-         else
-         {
-            bw.write("  <tr class=\"roweven\">" + Dump.newLine());
-         }
-         bw.write("     <td><a href=\"../" + extension + "/" + archiveName + ".html\">" +
-                  archiveName + "</a></td>" + Dump.newLine());
+         
+         bw.write("  <element>" + Dump.newLine());
+        
+        
+         bw.write("     <Archive>../" + extension + "/" + archiveName + ".xml" +
+                  archiveName + "</Archive>" + Dump.newLine());
          if (archive.isOSGi())
          {
-            bw.write("     <td style=\"color: green;\">Yes</td>" + Dump.newLine());
+            bw.write("     <OSGi>Yes</OSGi>" + Dump.newLine());
             osgiReady++;
          }
          else
@@ -464,43 +459,43 @@ public class OSGiReport extends AbstractReport
             if (!isFiltered(archiveName))
             {
                status = ReportStatus.RED;
-               bw.write("     <td style=\"color: red;\">No</td>" + Dump.newLine());
+               bw.write("     <OSGi>No</OSGi>" + Dump.newLine());
             }
             else
             {
-               bw.write("     <td style=\"color: red; text-decoration: line-through;\">No</td>" + Dump.newLine());
+               bw.write("     <OSGi>No</OSGi>" + Dump.newLine());
             }
          }
-         bw.write("     <td><a href=\"" + archiveName + "/index.html\">Report</a></td>" + Dump.newLine());
-         bw.write("     <td><a href=\"" + archiveName + "/MANIFEST.MF\">Manifest</a></td>" + Dump.newLine());
-         bw.write("  </tr>" + Dump.newLine());
+         bw.write("     <Report>" + archiveName + "/index.xml</Report>" + Dump.newLine());
+         bw.write("     <Manifest>" + archiveName + "/MANIFEST.MF</Manifest>" + Dump.newLine());
+         bw.write("  </element>" + Dump.newLine());
 
          odd = !odd;
       }
 
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
 
       bw.write(Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      
 
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Status</th>" + Dump.newLine());
-      bw.write("     <th>Archives</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+      bw.write("  <element>" + Dump.newLine());
+      //bw.write("     <th>Status</th>" + Dump.newLine());
+      //bw.write("     <th>Archives</th>" + Dump.newLine());
+      bw.write("  </element>" + Dump.newLine());
 
-      bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-      bw.write("     <td>Ready</td>" + Dump.newLine());
-      bw.write("     <td style=\"color: green;\">" + osgiReady + "</td>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+      bw.write("  <element class=\"rowodd\">" + Dump.newLine());
+      bw.write("     <Status>Ready</Status>" + Dump.newLine());
+      bw.write("     <Archives>" + osgiReady + "</Archives>" + Dump.newLine());
+      bw.write("  </element>" + Dump.newLine());
 
-      bw.write("  <tr class=\"roweven\">" + Dump.newLine());
-      bw.write("     <td>Not ready</td>" + Dump.newLine());
-      bw.write("     <td style=\"color: red;\">" + osgiNotReady + "</td>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+      bw.write("  <element class=\"roweven\">" + Dump.newLine());
+      bw.write("     <Status>Not ready</Status>" + Dump.newLine());
+      bw.write("     <Archives>" + osgiNotReady + "</Archives>" + Dump.newLine());
+      bw.write("  </element>" + Dump.newLine());
 
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
    }
 
    /**
@@ -511,13 +506,13 @@ public class OSGiReport extends AbstractReport
     */
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
 
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      bw.write("../index.xml" + Dump.newLine());
+     
    }
 
    /**

@@ -35,6 +35,7 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import org.jboss.tattletale.reporting.common.*;
 
 /**
  * Reporting class that will generate package level
@@ -67,12 +68,12 @@ public class PackageDependantsReport extends CLSReport
     */
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Package</th>" + Dump.newLine());
-      bw.write("     <th>Dependants</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+    
+      //bw.write("     <th>Package</th>" + Dump.newLine());
+      //bw.write("     <th>Dependants</th>" + Dump.newLine());
+     
 
       SortedMap<String, SortedSet<String>> result = recursivelyBuildResultFromArchive(archives);
       boolean odd = true;
@@ -86,16 +87,12 @@ public class PackageDependantsReport extends CLSReport
 
          if (packDeps != null && packDeps.size() > 0)
          {
-            if (odd)
-            {
-               bw.write("  <tr package =\"rowodd\">" + Dump.newLine());
-            }
-            else
-            {
-               bw.write("  <tr package =\"roweven\">" + Dump.newLine());
-            }
-            bw.write("     <td>" + pack + "</a></td>" + Dump.newLine());
-            bw.write("     <td>");
+            
+             bw.write("  <element>" + Dump.newLine());
+           
+          
+            bw.write("     <Package>" + pack + "</Package>" + Dump.newLine());
+            bw.write("     <Dependants>");
 
             Iterator<String> sit = packDeps.iterator();
             while (sit.hasNext())
@@ -107,14 +104,14 @@ public class PackageDependantsReport extends CLSReport
                   bw.write(", ");
             }
 
-            bw.write("</td>" + Dump.newLine());
-            bw.write("  </tr>" + Dump.newLine());
+            bw.write("</Dependants>" + Dump.newLine());
+            bw.write("  </element>" + Dump.newLine());
             
             odd = !odd;
          }
       }
 
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
    }
 
    private SortedMap<String, SortedSet<String>> recursivelyBuildResultFromArchive(Collection<Archive> archives)
@@ -184,12 +181,12 @@ public class PackageDependantsReport extends CLSReport
     */
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
 
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      bw.write("../index.xml" + Dump.newLine());
+    
    }
 }

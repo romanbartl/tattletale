@@ -30,6 +30,9 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.jboss.tattletale.reporting.abstracts.AbstractReport;
+import org.jboss.tattletale.reporting.common.*;
+import org.jboss.tattletale.reporting.interfaces.*;
 /**
  * Packages in multiple JAR files report
  *
@@ -73,12 +76,12 @@ public class PackageMultipleJarsReport extends AbstractReport
    @Override
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Package</th>" + Dump.newLine());
-      bw.write("     <th>Jar files</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+     
+      //bw.write("     <th>Package</th>" + Dump.newLine());
+      //bw.write("     <th>Jar files</th>" + Dump.newLine());
+     
 
       SortedMap<String, SortedSet<String>> packageProvides = new TreeMap<String, SortedSet<String>>();
 
@@ -123,30 +126,21 @@ public class PackageMultipleJarsReport extends AbstractReport
             {
                status = ReportStatus.YELLOW;
             }
-
-            if (odd)
-            {
-               bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-            }
-            else
-            {
-               bw.write("  <tr class=\"roweven\">" + Dump.newLine());
-            }
-            bw.write("     <td>" + pkg + "</td>" + Dump.newLine());
-            if (!filtered)
-            {
-               bw.write("        <td>");
-            }
-            else
-            {
-               bw.write("        <td style=\"text-decoration: line-through;\">");
-            }
+            
+               bw.write("  <element>" + Dump.newLine());
+            
+           
+            bw.write("     <Package>" + pkg + "</Package>" + Dump.newLine());
+            
+            bw.write("<Jar_files>");
+            
+            
 
             Iterator sit = archives.iterator();
             while (sit.hasNext())
             {
                String archive = (String) sit.next();
-               bw.write("<a href=\"../jar/" + archive + ".html\">" + archive + "</a>" + Dump.newLine());
+               bw.write("<../jar/" + archive + ".xml" + archive + Dump.newLine());
 
                if (sit.hasNext())
                {
@@ -154,26 +148,26 @@ public class PackageMultipleJarsReport extends AbstractReport
                }
             }
 
-            bw.write("</td>" + Dump.newLine());
-            bw.write("  </tr>" + Dump.newLine());
+            bw.write("</Jar_files>" + Dump.newLine());
+            bw.write("  </element>" + Dump.newLine());
 
             odd = !odd;
          }
       }
 
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
    }
 
    @Override
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
 
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      bw.write("../index.xml>" + Dump.newLine());
+     
    }
 
    /**

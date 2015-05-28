@@ -36,7 +36,7 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
-
+import org.jboss.tattletale.reporting.common.*;
 /**
  * Transitive dependants report
  *
@@ -66,12 +66,12 @@ public class TransitiveDependantsReport extends CLSReport
     */
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Archive</th>" + Dump.newLine());
-      bw.write("     <th>Dependants</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+     
+      //bw.write("     <th>Archive</th>" + Dump.newLine());
+      //bw.write("     <th>Dependants</th>" + Dump.newLine());
+      
 
       SortedMap<String, SortedSet<String>> dependantsMap = new TreeMap<String, SortedSet<String>>();
 
@@ -122,7 +122,7 @@ public class TransitiveDependantsReport extends CLSReport
          transitiveDependantsMap.put(archive, result);
       }
 
-      boolean odd = true;
+      
 
       mit = transitiveDependantsMap.entrySet().iterator();
       while (mit.hasNext())
@@ -132,20 +132,16 @@ public class TransitiveDependantsReport extends CLSReport
          String archive = (String) entry.getKey();
          SortedSet<String> value = (SortedSet<String>) entry.getValue();
 
-         if (odd)
-         {
-            bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-         }
-         else
-         {
-            bw.write("  <tr class=\"roweven\">" + Dump.newLine());
-         }
-         bw.write("     <td><a href=\"../jar/" + archive + ".html\">" + archive + "</a></td>" + Dump.newLine());
-         bw.write("     <td>");
+         
+        bw.write("  <element>" + Dump.newLine());
+         
+         
+         bw.write("     <Archive>../jar/" + archive + ".xml" + archive + "</Archive>" + Dump.newLine());
+         bw.write("     <Dependants>");
 
          if (value.size() == 0)
          {
-            bw.write("&nbsp;");
+            bw.write("none");
          }
          else
          {
@@ -155,7 +151,7 @@ public class TransitiveDependantsReport extends CLSReport
                String r = valueIt.next();
                if (r.endsWith(".jar"))
                {
-                  bw.write("<a href=\"../jar/" + r + ".html\">" + r + "</a>");
+                  bw.write("../jar/" + r + ".xml>" + r);
                }
                else
                {
@@ -169,13 +165,13 @@ public class TransitiveDependantsReport extends CLSReport
             }
          }
 
-         bw.write("</td>" + Dump.newLine());
-         bw.write("  </tr>" + Dump.newLine());
+         bw.write("</Dependants>" + Dump.newLine());
+         bw.write("  </element>" + Dump.newLine());
 
-         odd = !odd;
+        
       }
 
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
    }
 
    private Set<String> getRequires(Archive a)
@@ -208,13 +204,13 @@ public class TransitiveDependantsReport extends CLSReport
     */
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
 
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      bw.write("../index.xml" + Dump.newLine());
+      
    }
 
    /**

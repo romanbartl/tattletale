@@ -30,7 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
+import org.jboss.tattletale.reporting.common.*;
 /**
  * Dependants report
  *
@@ -61,11 +61,11 @@ public class DependantsReport extends CLSReport
     */
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Archive</th>" + Dump.newLine());
-      bw.write("     <th>Dependants</th>" + Dump.newLine());
+    
+     // bw.write("     <th>Archive</th>" + Dump.newLine());
+     // bw.write("     <th>Dependants</th>" + Dump.newLine());
 
       boolean odd = true;
 
@@ -75,17 +75,13 @@ public class DependantsReport extends CLSReport
          int finalDot = archiveName.lastIndexOf(".");
          String extension = archiveName.substring(finalDot + 1);
 
-         if (odd)
-         {
-            bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-         }
-         else
-         {
-            bw.write("  <tr class=\"roweven\">" + Dump.newLine());
-         }
-         bw.write("     <td><a href=\"../" + extension + "/" + archiveName + ".html\">" +
-               archiveName + "</a></td>" + Dump.newLine());
-         bw.write("     <td>");
+         
+          bw.write("  <element>" + Dump.newLine());
+         
+         
+         bw.write("     <Archive>../" + extension + "/" + archiveName + ".xml" +
+               archiveName + "</Archive>" + Dump.newLine());
+         bw.write("     <Dependants>");
 
 
          SortedSet<String> result = new TreeSet<String>();
@@ -105,7 +101,7 @@ public class DependantsReport extends CLSReport
 
          if (result.size() == 0)
          {
-            bw.write("&nbsp;");
+            bw.write("none");
          }
          else
          {
@@ -115,7 +111,7 @@ public class DependantsReport extends CLSReport
                String r = resultIt.next();
                if (r.endsWith(".jar"))
                {
-                  bw.write("<a href=\"../jar/" + r + ".html\">" + r + "</a>");
+                  bw.write("../jar/" + r + ".xml" + r);
                }
                else
                {
@@ -129,14 +125,14 @@ public class DependantsReport extends CLSReport
             }
          }
 
-         bw.write("</td>" + Dump.newLine());
-         bw.write("  </tr>" + Dump.newLine());
+         bw.write("</Dependants>" + Dump.newLine());
+         bw.write("  </element>" + Dump.newLine());
 
          odd = !odd;
       }
 
-      bw.write("  </tr>" + Dump.newLine());
-      bw.write("</table>" + Dump.newLine());
+      
+      bw.write("</elements>" + Dump.newLine());
    }
 
    private SortedSet<String> getRequires(Archive archive)
@@ -167,12 +163,12 @@ public class DependantsReport extends CLSReport
     */
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
 
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      bw.write("../index.xml" + Dump.newLine());
+    
    }
 }

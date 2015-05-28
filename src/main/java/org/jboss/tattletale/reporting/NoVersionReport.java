@@ -24,6 +24,7 @@ package org.jboss.tattletale.reporting;
 import org.jboss.tattletale.core.Archive;
 import org.jboss.tattletale.core.Location;
 import org.jboss.tattletale.core.NestableArchive;
+import org.jboss.tattletale.reporting.abstracts.AbstractReport;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -31,6 +32,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.SortedSet;
 
+import org.jboss.tattletale.reporting.common.*;
+import org.jboss.tattletale.reporting.interfaces.*;
 /**
  * Multiple locations report
  *
@@ -59,14 +62,14 @@ public class NoVersionReport extends AbstractReport
     */
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Name</th>" + Dump.newLine());
-      bw.write("     <th>Location</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+     
+      //bw.write("     <th>Name</th>" + Dump.newLine());
+      //bw.write("     <th>Location</th>" + Dump.newLine());
+  
       recursivelyWriteContent(bw, archives);
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
    }
 
    private void recursivelyWriteContent(BufferedWriter bw, Collection<Archive> archives) throws IOException
@@ -108,17 +111,13 @@ public class NoVersionReport extends AbstractReport
 
             if (include)
             {
-               if (odd)
-               {
-                  bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-               }
-               else
-               {
-                  bw.write("  <tr class=\"roweven\">" + Dump.newLine());
-               }
-               bw.write("     <td><a href=\"../jar/" + archive.getName() + ".html\">" +
-                        archive.getName() + "</a></td>" + Dump.newLine());
-               bw.write("     <td>");
+               
+                bw.write("  <element>" + Dump.newLine());
+              
+              
+               bw.write("     <Name>../jar/" + archive.getName() + ".xml" +
+                        archive.getName() + "</Name>" + Dump.newLine());
+               bw.write("     <Location>");
 
                bw.write("       <table>" + Dump.newLine());
 
@@ -136,7 +135,7 @@ public class NoVersionReport extends AbstractReport
                   }
                   else
                   {
-                     bw.write("        <td style=\"text-decoration: line-through;\">");
+                     bw.write("        <td>");
                   }
                   if (location.getVersion() != null)
                   {
@@ -153,8 +152,8 @@ public class NoVersionReport extends AbstractReport
 
                bw.write("       </table>" + Dump.newLine());
 
-               bw.write("</td>" + Dump.newLine());
-               bw.write("  </tr>" + Dump.newLine());
+               bw.write("</Location>" + Dump.newLine());
+               bw.write("  </element>" + Dump.newLine());
 
                odd = !odd;
             }
@@ -171,13 +170,13 @@ public class NoVersionReport extends AbstractReport
     */
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
 
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      bw.write("../index.xml" + Dump.newLine());
+     
    }
 
    /**

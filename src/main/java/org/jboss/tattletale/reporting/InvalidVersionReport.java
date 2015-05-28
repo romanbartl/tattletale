@@ -21,10 +21,6 @@
  */
 package org.jboss.tattletale.reporting;
 
-import org.jboss.tattletale.core.Archive;
-import org.jboss.tattletale.core.Location;
-import org.jboss.tattletale.core.NestableArchive;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Iterator;
@@ -32,6 +28,13 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.jboss.tattletale.core.Archive;
+import org.jboss.tattletale.core.Location;
+import org.jboss.tattletale.core.NestableArchive;
+import org.jboss.tattletale.reporting.abstracts.AbstractReport;
+import org.jboss.tattletale.reporting.common.ReportSeverity;
+import org.jboss.tattletale.reporting.common.ReportStatus;
+import org.jboss.tattletale.reporting.interfaces.Filter;
 /**
  * Multiple locations report
  *
@@ -61,12 +64,12 @@ public class InvalidVersionReport extends AbstractReport
     */
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Name</th>" + Dump.newLine());
-      bw.write("     <th>Location</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+    
+      //bw.write("     <th>Name</th>" + Dump.newLine());
+      //bw.write("     <th>Location</th>" + Dump.newLine());
+    
 
       boolean odd = true;
 
@@ -93,15 +96,15 @@ public class InvalidVersionReport extends AbstractReport
 
             if (odd)
             {
-               bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
+               bw.write("  <element class=\"rowodd\">" + Dump.newLine());
             }
             else
             {
-               bw.write("  <tr class=\"roweven\">" + Dump.newLine());
+               bw.write("  <element class=\"roweven\">" + Dump.newLine());
             }
-            bw.write("     <td><a href=\"../" + extension + "/" + archiveName + ".html\">" + archiveName
-                  + "</a></td>" + Dump.newLine());
-            bw.write("     <td>");
+            bw.write("     <Name>../" + extension + "/" + archiveName + ".xml" + archiveName
+                  + "</Name>" + Dump.newLine());
+            bw.write("     <Location>");
 
             bw.write("       <table>" + Dump.newLine());
 
@@ -119,7 +122,7 @@ public class InvalidVersionReport extends AbstractReport
                }
                else
                {
-                  bw.write("        <td style=\"text-decoration: line-through;\">");
+                  bw.write("        <td>");
                }
                if (location.getVersion() != null)
                {
@@ -136,14 +139,15 @@ public class InvalidVersionReport extends AbstractReport
 
             bw.write("       </table>" + Dump.newLine());
 
-            bw.write("</td>" + Dump.newLine());
-            bw.write("  </tr>" + Dump.newLine());
+            bw.write("</Location>" + Dump.newLine());
+            bw.write("  </element>" + Dump.newLine());
 
             odd = !odd;
          }
 
-         bw.write("</table>" + Dump.newLine());
+        
       }
+      bw.write("</elements>" + Dump.newLine());
    }
 
 
@@ -176,13 +180,13 @@ public class InvalidVersionReport extends AbstractReport
     */
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
 
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      bw.write("../index.xml" + Dump.newLine());
+    
    }
 
    /**

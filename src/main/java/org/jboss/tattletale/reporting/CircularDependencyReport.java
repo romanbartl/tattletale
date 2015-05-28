@@ -21,10 +21,6 @@
  */
 package org.jboss.tattletale.reporting;
 
-import org.jboss.tattletale.core.Archive;
-import org.jboss.tattletale.core.ArchiveTypes;
-import org.jboss.tattletale.core.NestableArchive;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Collection;
@@ -34,6 +30,13 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
+import org.jboss.tattletale.core.Archive;
+import org.jboss.tattletale.core.ArchiveTypes;
+import org.jboss.tattletale.core.NestableArchive;
+import org.jboss.tattletale.reporting.common.ReportSeverity;
+import org.jboss.tattletale.reporting.common.ReportStatus;
+import org.jboss.tattletale.reporting.interfaces.Filter;
 
 /**
  * Circular dependency report
@@ -62,12 +65,12 @@ public class CircularDependencyReport extends CLSReport
     */
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Archive</th>" + Dump.newLine());
-      bw.write("     <th>Circular Dependencies</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+     
+    //  bw.write("     <th>Archive</th>" + Dump.newLine());
+    //  bw.write("     <th>Circular Dependencies</th>" + Dump.newLine());
+     
 
       SortedMap<String, SortedSet<String>> dependsOnMap = recursivelyBuildDependsOnFromArchive(archives);
       SortedMap<String, SortedSet<String>> transitiveDependsOnMap = new TreeMap<String, SortedSet<String>>();
@@ -128,23 +131,14 @@ public class CircularDependencyReport extends CLSReport
                   status = ReportStatus.RED;
                }
 
-               if (odd)
-               {
-                  bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-               }
-               else
-               {
-                  bw.write("  <tr class=\"roweven\">" + Dump.newLine());
-               }
-               bw.write("     <td><a href=\"../" + extension + "/" + archive + ".html\">" + archive + "</a></td>" +
+                bw.write("  <element>" + Dump.newLine());
+               
+              
+               bw.write("     <Archive>../" + extension + "/" + archive + ".xml\">" + archive + "</Archive>" +
                      Dump.newLine());
                if (!filtered)
                {
-                  bw.write("     <td>");
-               }
-               else
-               {
-                  bw.write("     <td style=\"text-decoration: line-through;\">");
+                  bw.write("     <Circular_Dependencies>");
                }
 
                valueIt = value.iterator();
@@ -154,11 +148,11 @@ public class CircularDependencyReport extends CLSReport
 
                   if (circular.contains(r))
                   {
-                     bw.write("<a href=\"../" + extension + "/" + r + ".html\">" + r + " (*)</a>");
+                     bw.write("../" + extension + "/" + r + ".xml->" + r + " (*)");
                   }
                   else
                   {
-                     bw.write("<a href=\"../" + extension + "/" + r + ".html\">" + r + "</a>");
+                     bw.write("../" + extension + "/" + r + ".xml->" + r);
                   }
 
                   if (valueIt.hasNext())
@@ -167,15 +161,15 @@ public class CircularDependencyReport extends CLSReport
                   }
                }
 
-               bw.write("</td>" + Dump.newLine());
-               bw.write("  </tr>" + Dump.newLine());
+               bw.write("</Circular_Dependencies>" + Dump.newLine());
+               bw.write("  </element>" + Dump.newLine());
 
                odd = !odd;
             }
          }
       }
 
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
    }
 
    private SortedMap<String, SortedSet<String>> recursivelyBuildDependsOnFromArchive(Collection<Archive> archives)
@@ -231,13 +225,13 @@ public class CircularDependencyReport extends CLSReport
     */
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
 
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      bw.write("../index.xml" + Dump.newLine());
+      
    }
 
    /**

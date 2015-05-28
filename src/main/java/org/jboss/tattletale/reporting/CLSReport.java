@@ -22,6 +22,7 @@
 package org.jboss.tattletale.reporting;
 
 import org.jboss.tattletale.profiles.Profile;
+import org.jboss.tattletale.reporting.abstracts.AbstractReport;
 import org.jboss.tattletale.reporting.classloader.ClassLoaderStructure;
 
 import java.util.List;

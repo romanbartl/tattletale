@@ -31,7 +31,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javassist.bytecode.ClassFile;
-
+import org.jboss.tattletale.reporting.common.*;
 /**
  * JAR report
  *
@@ -127,7 +127,7 @@ public class JarReport extends ArchiveReport
     * @throws IOException if an error occurs
     */
    @Override
-   BufferedWriter getBufferedWriter() throws IOException
+   protected BufferedWriter getBufferedWriter() throws IOException
    {
       return getBufferedWriter(getFilename());
    }

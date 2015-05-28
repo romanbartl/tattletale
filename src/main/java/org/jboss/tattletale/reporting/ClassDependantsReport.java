@@ -22,10 +22,6 @@
 
 package org.jboss.tattletale.reporting;
 
-import org.jboss.tattletale.core.Archive;
-import org.jboss.tattletale.core.NestableArchive;
-import org.jboss.tattletale.profiles.Profile;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Iterator;
@@ -36,6 +32,10 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.jboss.tattletale.core.Archive;
+import org.jboss.tattletale.core.NestableArchive;
+import org.jboss.tattletale.profiles.Profile;
+import org.jboss.tattletale.reporting.common.ReportSeverity;
 /**
  * Class level Dependants report
  *
@@ -65,12 +65,8 @@ public class ClassDependantsReport extends CLSReport
     */
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Class</th>" + Dump.newLine());
-      bw.write("     <th>Dependants</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
 
       SortedMap<String, SortedSet<String>> result = new TreeMap<String, SortedSet<String>>();
 
@@ -135,16 +131,12 @@ public class ClassDependantsReport extends CLSReport
 
          if (deps != null && deps.size() > 0)
          {
-            if (odd)
-            {
-               bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-            }
-            else
-            {
-               bw.write("  <tr class=\"roweven\">" + Dump.newLine());
-            }
-            bw.write("     <td>" + clz + "</a></td>" + Dump.newLine());
-            bw.write("     <td>");
+            
+            bw.write("  <element>" + Dump.newLine());
+            
+            
+            bw.write("     <class>" + clz + "</class>" + Dump.newLine());
+            bw.write("     <Dependants>");
 
             Iterator<String> sit = deps.iterator();
             while (sit.hasNext())
@@ -154,18 +146,18 @@ public class ClassDependantsReport extends CLSReport
 
                if (sit.hasNext())
                {
-                  bw.write(", ");
+                  bw.write("; ");
                }
             }
 
-            bw.write("</td>" + Dump.newLine());
-            bw.write("  </tr>" + Dump.newLine());
+            bw.write("</Dependants>" + Dump.newLine());
+            bw.write("  </element>" + Dump.newLine());
 
             odd = !odd;
          }
       }
 
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
    }
 
    private SortedMap<String, SortedSet<String>> getClassDependencies(Archive archive)
@@ -199,12 +191,11 @@ public class ClassDependantsReport extends CLSReport
     */
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
 
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      bw.write("../index.xml" + Dump.newLine());
    }
 }

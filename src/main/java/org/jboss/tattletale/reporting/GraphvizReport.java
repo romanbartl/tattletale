@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
+import org.jboss.tattletale.reporting.common.*;
 /**
  * Graphviz report
  *
@@ -87,13 +87,13 @@ public class GraphvizReport extends CLSReport
     */
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Archive</th>" + Dump.newLine());
-      bw.write("     <th>Archives</th>" + Dump.newLine());
-      bw.write("     <th>Packages</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+      
+      //bw.write("     <th>Archive</th>" + Dump.newLine());
+      //bw.write("     <th>Archives</th>" + Dump.newLine());
+      //bw.write("     <th>Packages</th>" + Dump.newLine());
+     
 
 
       FileWriter alldotfw = new FileWriter
@@ -114,17 +114,17 @@ public class GraphvizReport extends CLSReport
 
          if (odd)
          {
-            bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
+            bw.write("  <element class=\"rowodd\">" + Dump.newLine());
          }
          else
          {
-            bw.write("  <tr class=\"roweven\">" + Dump.newLine());
+            bw.write("  <element class=\"roweven\">" + Dump.newLine());
          }
-         bw.write("     <td><a href=\"../" + extension + "/" + archiveName +
-               ".html\">" + archiveName + "</a></td>" + Dump.newLine());
+         bw.write("     <Archive>../" + extension + "/" + archiveName +
+               ".xml" + archiveName + "</Archive>" + Dump.newLine());
 
          // Archive level dependencies
-         bw.write("     <td>");
+         bw.write("     <Archives>");
 
          SortedSet<String> result = new TreeSet<String>();
 
@@ -147,15 +147,15 @@ public class GraphvizReport extends CLSReport
 
          if (result.size() == 0)
          {
-            bw.write("&nbsp;");
+            bw.write("none");
          }
          else
          {
-            bw.write("<a href=\"" + archiveName + "/" + archiveName + ".dot\">.dot</a>");
+            bw.write( archiveName + "/" + archiveName + ".dot");
             if (hasDot)
             {
-               bw.write("&nbsp;");
-               bw.write("<a href=\"" + archiveName + "/" + archiveName + ".png\">.png</a>");
+               bw.write("none");
+               bw.write(archiveName + "/" + archiveName + ".png");
             }
 
             File doutput = new File(getOutputDirectory(), archiveName);
@@ -188,22 +188,22 @@ public class GraphvizReport extends CLSReport
             }
          }
 
-         bw.write("</td>" + Dump.newLine());
+         bw.write("</Archives>" + Dump.newLine());
 
          // Package level dependencies
-         bw.write("     <td>");
+         bw.write("     <Packages>");
 
          if (archive.getPackageDependencies().size() == 0)
          {
-            bw.write("&nbsp;");
+            bw.write("none");
          }
          else
          {
-            bw.write("<a href=\"" + archiveName + "/" + archiveName + "-package.dot\">.dot</a>");
+            bw.write(archiveName + "/" + archiveName + "-package.dot");
             if (hasDot)
             {
-               bw.write("&nbsp;");
-               bw.write("<a href=\"" + archiveName + "/" + archiveName + "-package.png\">.png</a>");
+               bw.write("none");
+               bw.write(archiveName + "/" + archiveName + "-package.png");
             }
 
             File doutput = new File(getOutputDirectory(), archiveName);
@@ -241,9 +241,9 @@ public class GraphvizReport extends CLSReport
             }
          }
 
-         bw.write("</td>" + Dump.newLine());
+         bw.write("</Packages>" + Dump.newLine());
 
-         bw.write("  </tr>" + Dump.newLine());
+         bw.write("  </element>" + Dump.newLine());
 
          odd = !odd;
       }
@@ -254,7 +254,7 @@ public class GraphvizReport extends CLSReport
       alldotw.flush();
       alldotw.close();
 
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
    }
 
    private SortedSet<String> getRequires(Archive archive)
@@ -291,16 +291,16 @@ public class GraphvizReport extends CLSReport
     */
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
 
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      bw.write("../index.xml" + Dump.newLine());
+   
 
-      bw.write("<a href=\"dependencies.dot\">All dependencies</a>");
-      bw.write("<p>" + Dump.newLine());
+      bw.write("dependencies.dot");
+     
    }
 
    /**

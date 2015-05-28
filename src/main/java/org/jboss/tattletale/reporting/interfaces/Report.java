@@ -20,9 +20,11 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.tattletale.reporting;
+package org.jboss.tattletale.reporting.interfaces;
 
 import java.io.File;
+
+import org.jboss.tattletale.reporting.Dump;
 
 /**
  * Top-level interface that would define what all report types would have to satisfy.

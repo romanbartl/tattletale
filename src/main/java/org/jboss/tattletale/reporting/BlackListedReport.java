@@ -21,9 +21,6 @@
  */
 package org.jboss.tattletale.reporting;
 
-import org.jboss.tattletale.core.Archive;
-import org.jboss.tattletale.core.NestableArchive;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.List;
@@ -32,6 +29,12 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 
+import org.jboss.tattletale.core.Archive;
+import org.jboss.tattletale.core.NestableArchive;
+import org.jboss.tattletale.reporting.abstracts.AbstractReport;
+import org.jboss.tattletale.reporting.common.ReportSeverity;
+import org.jboss.tattletale.reporting.common.ReportStatus;
+import org.jboss.tattletale.reporting.interfaces.Filter;
 /**
  * Blacklisted report
  *
@@ -60,12 +63,12 @@ public class BlackListedReport extends AbstractReport
     */
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Archive</th>" + Dump.newLine());
-      bw.write("     <th>Usage</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+      
+      //bw.write("     <th>Archive</th>" + Dump.newLine());
+      //bw.write("     <th>Usage</th>" + Dump.newLine());
+      
 
       boolean odd = true;
 
@@ -91,17 +94,13 @@ public class BlackListedReport extends AbstractReport
 
          if (include)
          {
-            if (odd)
-            {
-               bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-            }
-            else
-            {
-               bw.write("  <tr class=\"roweven\">" + Dump.newLine());
-            }
-            bw.write("     <td><a href=\"../" + extension + "/" + archiveName + ".html\">"
-                  + archive.getName() + "</a></td>" + Dump.newLine());
-            bw.write("     <td>");
+            
+            bw.write("  <element>" + Dump.newLine());
+            
+           
+            bw.write("     <Archive>/" + extension + "/" + archiveName + ".xml"
+                  + archive.getName() + "</Archive>" + Dump.newLine());
+            bw.write("     <Usage>");
 
             bw.write("       <table>" + Dump.newLine());
 
@@ -122,7 +121,7 @@ public class BlackListedReport extends AbstractReport
                }
                else
                {
-                  bw.write("       <td style=\"text-decoration: line-through;\">");
+                  bw.write("       <td>");
                }
 
                for (String blp : blpkgs)
@@ -137,16 +136,17 @@ public class BlackListedReport extends AbstractReport
 
             bw.write("       </table>" + Dump.newLine());
 
-            bw.write("</td>" + Dump.newLine());
-            bw.write("  </tr>" + Dump.newLine());
+            bw.write("</Usage>" + Dump.newLine());
+            bw.write("  </element>" + Dump.newLine());
 
             odd = !odd;
 
 
          }
 
-         bw.write("</table>" + Dump.newLine());
+         
       }
+      bw.write("</elements>" + Dump.newLine());
    }
 
    private SortedMap<String, SortedSet<String>> getBlackListedDeps(Archive a)
@@ -177,13 +177,13 @@ public class BlackListedReport extends AbstractReport
     */
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
 
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      bw.write("../index.xml" + Dump.newLine());
+     
    }
 
    /**

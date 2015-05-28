@@ -34,7 +34,7 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
-
+import org.jboss.tattletale.reporting.common.*;
 /**
  * Reporting class that will generate package level
  * reports like how {@link ClassDependsOnReport}
@@ -67,13 +67,13 @@ public class PackageDependsOnReport extends CLSReport
    @Override
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
 
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      bw.write("../index.xml" + Dump.newLine());
+      
 
    }
 
@@ -85,12 +85,12 @@ public class PackageDependsOnReport extends CLSReport
    @Override
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Package</th>" + Dump.newLine());
-      bw.write("     <th>Depends On</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+     
+      //bw.write("     <th>Package</th>" + Dump.newLine());
+      //bw.write("     <th>Depends On</th>" + Dump.newLine());
+      
 
       SortedMap<String, SortedSet<String>> result = recursivelyBuildResultFromArchive(archives);
       boolean odd = true;
@@ -103,16 +103,12 @@ public class PackageDependsOnReport extends CLSReport
          String pack = entry.getKey();
          SortedSet<String> packDeps = entry.getValue();
 
-         if (odd)
-         {
-            bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-         }
-         else
-         {
-            bw.write("  <tr class=\"roweven\">" + Dump.newLine());
-         }
-         bw.write("     <td>" + pack + "</a></td>" + Dump.newLine());
-         bw.write("     <td>");
+        
+         bw.write("  <element>" + Dump.newLine());
+         
+         
+         bw.write("     <Package>" + pack + "</Package>" + Dump.newLine());
+         bw.write("     <Depends>");
 
          Iterator<String> sit = packDeps.iterator();
          while (sit.hasNext())
@@ -124,13 +120,13 @@ public class PackageDependsOnReport extends CLSReport
                bw.write(", ");
          }
 
-         bw.write("</td>" + Dump.newLine());
-         bw.write("  </tr>" + Dump.newLine());
+         bw.write("</Depends>" + Dump.newLine());
+         bw.write("  </element>" + Dump.newLine());
 
          odd = !odd;
       }
 
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
 
    }
 

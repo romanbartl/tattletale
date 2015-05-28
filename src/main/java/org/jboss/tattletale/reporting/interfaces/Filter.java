@@ -19,45 +19,43 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.tattletale.reporting;
-
-import java.io.Serializable;
-import java.util.Comparator;
+package org.jboss.tattletale.reporting.interfaces;
 
 /**
- * Size comparator
+ * Represents a filter
  *
  * @author Jesper Pedersen <jesper.pedersen@jboss.org>
  */
-public class SizeComparator implements Comparator<String>, Serializable
+public interface Filter
 {
-
-   /** Constructor */
-   public SizeComparator()
-   {
-
-   }
+   /**
+    * Is filtered
+    *
+    * @return True if filtered; otherwise false
+    */
+   public boolean isFiltered();
 
    /**
-    * Compare two objects
+    * Is filtered
     *
-    * @param sa String
-    * @param sb String
-    * @return Positive if sb greater than sa; zero if equal; otherwise negative
+    * @param archive The archive
+    * @return True if filtered; otherwise false
     */
-   public int compare(String sa, String sb)
-   {
-      if (sa.length() < sb.length())
-      {
-         return 1;
-      }
-      else if (sa.length() == sb.length())
-      {
-         return sa.compareTo(sb);
-      }
-      else
-      {
-         return -1;
-      }
-   }
+   public boolean isFiltered(String archive);
+
+   /**
+    * Is filtered
+    *
+    * @param archive The archive
+    * @param query   The query
+    * @return True if filtered; otherwise false
+    */
+   public boolean isFiltered(String archive, String query);
+
+   /**
+    * Init the filter
+    *
+    * @param value The filter value
+    */
+   public void init(String value);
 }

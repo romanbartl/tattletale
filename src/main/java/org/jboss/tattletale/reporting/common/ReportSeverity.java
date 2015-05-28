@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2010, Red Hat Middleware LLC, and individual contributors
+ * Copyright 2009, Red Hat Middleware LLC, and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -19,43 +19,50 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.tattletale.reporting;
+package org.jboss.tattletale.reporting.common;
 
 /**
- * Represents a filter
+ * Represents a report severity
  *
  * @author Jesper Pedersen <jesper.pedersen@jboss.org>
  */
-public interface Filter
+public class ReportSeverity
 {
-   /**
-    * Is filtered
-    *
-    * @return True if filtered; otherwise false
-    */
-   public boolean isFiltered();
+   /** INFO */
+   public static final int INFO = 0;
+
+   /** WARNING */
+   public static final int WARNING = 1;
+
+   /** ERROR */
+   public static final int ERROR = 2;
+
+   /** Constructor */
+   private ReportSeverity()
+   {
+   }
 
    /**
-    * Is filtered
+    * Returns severity string
     *
-    * @param archive The archive
-    * @return True if filtered; otherwise false
+    * @param severity constant value
+    * @return severity string
     */
-   public boolean isFiltered(String archive);
-
-   /**
-    * Is filtered
-    *
-    * @param archive The archive
-    * @param query   The query
-    * @return True if filtered; otherwise false
-    */
-   public boolean isFiltered(String archive, String query);
-
-   /**
-    * Init the filter
-    *
-    * @param value The filter value
-    */
-   public void init(String value);
+   public static String getSeverityString(int severity)
+   {
+      String output = "-";
+      if (severity == ReportSeverity.INFO)
+      {
+         output = "INFO";
+      }
+      else if (severity == ReportSeverity.WARNING)
+      {
+         output = "WARNING";
+      }
+      else if (severity == ReportSeverity.ERROR)
+      {
+         output = "ERROR";
+      }
+      return output;
+   }
 }

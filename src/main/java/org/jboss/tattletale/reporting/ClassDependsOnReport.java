@@ -35,6 +35,7 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.jboss.tattletale.reporting.common.*;
 /**
  * Class level Depends On report
  *
@@ -64,12 +65,7 @@ public class ClassDependsOnReport extends CLSReport
     */
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
-
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Class</th>" + Dump.newLine());
-      bw.write("     <th>Depends On</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
       SortedMap<String, SortedSet<String>> result = new TreeMap<String, SortedSet<String>>();
 
@@ -107,16 +103,10 @@ public class ClassDependsOnReport extends CLSReport
          String clz = entry.getKey();
          SortedSet<String> deps = entry.getValue();
 
-         if (odd)
-         {
-            bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-         }
-         else
-         {
-            bw.write("  <tr class=\"roweven\">" + Dump.newLine());
-         }
-         bw.write("     <td>" + clz + "</a></td>" + Dump.newLine());
-         bw.write("     <td>");
+         bw.write("  <element>" + Dump.newLine());
+       
+         bw.write("     <class>" + clz + "</class>" + Dump.newLine());
+         bw.write("     <Dependson>");
 
          Iterator<String> sit = deps.iterator();
          while (sit.hasNext())
@@ -130,13 +120,13 @@ public class ClassDependsOnReport extends CLSReport
             }
          }
 
-         bw.write("</td>" + Dump.newLine());
-         bw.write("  </tr>" + Dump.newLine());
+         bw.write("</Dependson>" + Dump.newLine());
+         bw.write("  </element>" + Dump.newLine());
 
          odd = !odd;
       }
 
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
    }
 
    private SortedMap<String, SortedSet<String>> getClassDependencies(Archive archive)
@@ -171,12 +161,12 @@ public class ClassDependsOnReport extends CLSReport
     */
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
 
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      bw.write("../index.xml" + Dump.newLine());
+      
    }
 }

@@ -22,11 +22,14 @@
 package org.jboss.tattletale.reporting;
 
 import org.jboss.tattletale.core.Archive;
+import org.jboss.tattletale.reporting.abstracts.AbstractReport;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Iterator;
 
+import org.jboss.tattletale.reporting.common.*;
+import org.jboss.tattletale.reporting.interfaces.*;
 /**
  * A report that shows unused JAR archives
  *
@@ -54,12 +57,12 @@ public class UnusedJarReport extends AbstractReport
     */
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Archive</th>" + Dump.newLine());
-      bw.write("     <th>Used</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+    
+      //bw.write("     <th>Archive</th>" + Dump.newLine());
+      //bw.write("     <th>Used</th>" + Dump.newLine());
+     
 
       boolean odd = true;
       int used = 0;
@@ -94,20 +97,16 @@ public class UnusedJarReport extends AbstractReport
          }
 
 
-         if (odd)
-         {
-            bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-         }
-         else
-         {
-            bw.write("  <tr class=\"roweven\">" + Dump.newLine());
-         }
-         bw.write("     <td><a href=\"../" + extension + "/" + archiveName +
-                  ".html\">" + archiveName + "</a></td>" + Dump.newLine());
+       
+          bw.write("  <element>" + Dump.newLine());
+        
+         
+         bw.write("     <Archive>../" + extension + "/" + archiveName +
+                  ".xml" + archiveName + "</Archive>" + Dump.newLine());
 
          if (archiveStatus)
          {
-            bw.write("     <td style=\"color: green;\">Yes</td>" + Dump.newLine());
+            bw.write("     <Used>Yes</Used>" + Dump.newLine());
             used++;
          }
          else
@@ -117,42 +116,42 @@ public class UnusedJarReport extends AbstractReport
             if (!isFiltered(archive.getName()))
             {
                status = ReportStatus.YELLOW;
-               bw.write("     <td style=\"color: red;\">No</td>" + Dump.newLine());
+               bw.write("     <Used>No</Used>" + Dump.newLine());
             }
             else
             {
-               bw.write("     <td style=\"color: red; text-decoration: line-through;\">No</td>" + Dump.newLine());
+               bw.write("     <Used>No</Used>" + Dump.newLine());
             }
          }
 
-         bw.write("  </tr>" + Dump.newLine());
+         bw.write("  </element>" + Dump.newLine());
 
          odd = !odd;
       }
 
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
 
       bw.write(Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+     
 
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Status</th>" + Dump.newLine());
-      bw.write("     <th>Archives</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+    
+      //bw.write("     <th>Status</th>" + Dump.newLine());
+      //bw.write("     <th>Archives</th>" + Dump.newLine());
+      
 
-      bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-      bw.write("     <td>Used</td>" + Dump.newLine());
-      bw.write("     <td style=\"color: green;\">" + used + "</td>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+      bw.write("  <element>" + Dump.newLine());
+      bw.write("     <Status>Used</Status>" + Dump.newLine());
+      bw.write("     <Archives>" + used + "</Archives>" + Dump.newLine());
+      bw.write("  </element>" + Dump.newLine());
 
-      bw.write("  <tr class=\"roweven\">" + Dump.newLine());
-      bw.write("     <td>Unused</td>" + Dump.newLine());
-      bw.write("     <td style=\"color: red;\">" + unused + "</td>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+      bw.write("  <element>" + Dump.newLine());
+      bw.write("     <Status>Unused</Status>" + Dump.newLine());
+      bw.write("     <Archives>" + unused + "</Archives>" + Dump.newLine());
+      bw.write("  </element>" + Dump.newLine());
 
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
    }
 
    /**
@@ -163,13 +162,13 @@ public class UnusedJarReport extends AbstractReport
     */
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
 
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      bw.write("../index.xml" + Dump.newLine());
+      
    }
 
    /**

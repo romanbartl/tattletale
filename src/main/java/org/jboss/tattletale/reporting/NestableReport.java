@@ -26,6 +26,7 @@ import org.jboss.tattletale.core.Archive;
 import org.jboss.tattletale.core.ArchiveTypes;
 import org.jboss.tattletale.core.Location;
 import org.jboss.tattletale.core.NestableArchive;
+import org.jboss.tattletale.reporting.common.ArchiveReport;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -238,7 +239,7 @@ public abstract class NestableReport extends ArchiveReport
          }
          else
          {
-            bw.write("           <td>&nbsp;</td>" + Dump.newLine());
+            bw.write("           <td>none</td>" + Dump.newLine());
          }
          bw.write("         </tr>" + Dump.newLine());
       }
@@ -315,12 +316,12 @@ public abstract class NestableReport extends ArchiveReport
     */
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + nestableArchive.getName() + "</h1>" + Dump.newLine());
 
       bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+     
    }
 }

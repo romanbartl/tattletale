@@ -23,7 +23,8 @@
 package org.jboss.tattletale.reporting;
 
 import org.jboss.tattletale.core.NestableArchive;
-
+import org.jboss.tattletale.reporting.common.ReportSeverity;
+import org.jboss.tattletale.reporting.common.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
@@ -61,9 +62,9 @@ public class EarReport extends NestableReport
    {
       return DIRECTORY;
    }
-
+   
    @Override
-   BufferedWriter getBufferedWriter() throws IOException
+    protected BufferedWriter getBufferedWriter() throws IOException
    {
       return getBufferedWriter(getFilename());
    }

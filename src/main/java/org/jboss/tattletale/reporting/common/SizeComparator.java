@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2009, Red Hat Middleware LLC, and individual contributors
+ * Copyright 2010, Red Hat Middleware LLC, and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -19,50 +19,45 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.tattletale.reporting;
+package org.jboss.tattletale.reporting.common;
+
+import java.io.Serializable;
+import java.util.Comparator;
 
 /**
- * Represents a report severity
+ * Size comparator
  *
  * @author Jesper Pedersen <jesper.pedersen@jboss.org>
  */
-public class ReportSeverity
+public class SizeComparator implements Comparator<String>, Serializable
 {
-   /** INFO */
-   public static final int INFO = 0;
-
-   /** WARNING */
-   public static final int WARNING = 1;
-
-   /** ERROR */
-   public static final int ERROR = 2;
 
    /** Constructor */
-   private ReportSeverity()
+   public SizeComparator()
    {
+
    }
 
    /**
-    * Returns severity string
+    * Compare two objects
     *
-    * @param severity constant value
-    * @return severity string
+    * @param sa String
+    * @param sb String
+    * @return Positive if sb greater than sa; zero if equal; otherwise negative
     */
-   public static String getSeverityString(int severity)
+   public int compare(String sa, String sb)
    {
-      String output = "-";
-      if (severity == ReportSeverity.INFO)
+      if (sa.length() < sb.length())
       {
-         output = "INFO";
+         return 1;
       }
-      else if (severity == ReportSeverity.WARNING)
+      else if (sa.length() == sb.length())
       {
-         output = "WARNING";
+         return sa.compareTo(sb);
       }
-      else if (severity == ReportSeverity.ERROR)
+      else
       {
-         output = "ERROR";
+         return -1;
       }
-      return output;
    }
 }

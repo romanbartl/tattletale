@@ -24,12 +24,16 @@ package org.jboss.tattletale.reporting;
 import org.jboss.tattletale.core.Archive;
 import org.jboss.tattletale.core.Location;
 import org.jboss.tattletale.core.NestableArchive;
+import org.jboss.tattletale.reporting.abstracts.AbstractReport;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.jboss.tattletale.reporting.common.*;
+import org.jboss.tattletale.reporting.interfaces.*;
+import org.jboss.tattletale.reporting.common.*;
 /**
  * Multiple locations report
  *
@@ -58,14 +62,14 @@ public class MultipleLocationsReport extends AbstractReport
     */
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Name</th>" + Dump.newLine());
-      bw.write("     <th>Location</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+     
+      //bw.write("     <th>Name</th>" + Dump.newLine());
+      //bw.write("     <th>Location</th>" + Dump.newLine());
+      
       recursivelyWriteContent(bw, archives);
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
    }
 
    private void recursivelyWriteContent(BufferedWriter bw, Collection<Archive> archives) throws IOException
@@ -90,23 +94,19 @@ public class MultipleLocationsReport extends AbstractReport
 
             if (odd)
             {
-               bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
+               bw.write("  <element class=\"rowodd\">" + Dump.newLine());
             }
             else
             {
-               bw.write("  <tr class=\"roweven\">" + Dump.newLine());
+               bw.write("  <element class=\"roweven\">" + Dump.newLine());
             }
-            bw.write("     <td><a href=\"../jar/" + a.getName() + ".html\">" +
-                     a.getName() + "</a></td>" + Dump.newLine());
+            bw.write("     <Name>../jar/" + a.getName() + ".xml" +
+                     a.getName() + "</Name>" + Dump.newLine());
             if (!filtered)
             {
-               bw.write("     <td>");
+               bw.write("     <Location>");
             }
-            else
-            {
-               bw.write("     <td style=\"text-decoration: line-through;\">");
-            }
-
+            
             Iterator<Location> lit = a.getLocations().iterator();
             while (lit.hasNext())
             {
@@ -119,8 +119,8 @@ public class MultipleLocationsReport extends AbstractReport
                }
             }
 
-            bw.write("</td>" + Dump.newLine());
-            bw.write("  </tr>" + Dump.newLine());
+            bw.write("</Location>" + Dump.newLine());
+            bw.write("  </element>" + Dump.newLine());
 
             odd = !odd;
          }
@@ -136,13 +136,13 @@ public class MultipleLocationsReport extends AbstractReport
     */
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
 
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      bw.write("../index.xml>" + Dump.newLine());
+     
    }
 
    /**

@@ -22,10 +22,13 @@
 package org.jboss.tattletale.reporting;
 
 import org.jboss.tattletale.core.Archive;
+import org.jboss.tattletale.reporting.abstracts.AbstractReport;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 
+import org.jboss.tattletale.reporting.common.*;
+import org.jboss.tattletale.reporting.interfaces.*;
 /**
  * Signing information report
  *
@@ -54,12 +57,12 @@ public class SignReport extends AbstractReport
     */
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Archive</th>" + Dump.newLine());
-      bw.write("     <th>Status</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+      
+      //bw.write("     <th>Archive</th>" + Dump.newLine());
+      //bw.write("     <th>Status</th>" + Dump.newLine());
+ 
 
       boolean odd = true;
 
@@ -73,32 +76,27 @@ public class SignReport extends AbstractReport
          int finalDot = archiveName.lastIndexOf(".");
          String extension = archiveName.substring(finalDot + 1);
 
-         if (odd)
-         {
-            bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-         }
-         else
-         {
-            bw.write("  <tr class=\"roweven\">" + Dump.newLine());
-         }
-         bw.write("     <td><a href=\"../" + extension + "/" + archiveName +
-                  ".html\">" + archive.getName() + "</a></td>" + Dump.newLine());
+         bw.write("  <element>" + Dump.newLine());
+         
+         
+         bw.write("     <Archive>../" + extension + "/" + archiveName +
+                  ".xml" + archive.getName() + "</Archive>" + Dump.newLine());
          if (archive.getSign() != null)
          {
-            bw.write("     <td style=\"color: red;\">Signed</td>" + Dump.newLine());
+            bw.write("     <Status>Signed</Status>" + Dump.newLine());
             signed++;
          }
          else
          {
-            bw.write("     <td style=\"color: green;\">Unsigned</td>" + Dump.newLine());
+            bw.write("     <Status>Unsigned</Status>" + Dump.newLine());
             unsigned++;
          }
-         bw.write("  </tr>" + Dump.newLine());
+         bw.write("  </element>" + Dump.newLine());
 
          odd = !odd;
       }
 
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
 
       boolean filtered = isFiltered();
       if (signed > 0 && unsigned > 0 && !filtered)
@@ -107,41 +105,39 @@ public class SignReport extends AbstractReport
       }
 
       bw.write(Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+   
+      bw.write("<elements>" + Dump.newLine());
 
-      bw.write("<table>" + Dump.newLine());
+    
+     // bw.write("     <th>Status</th>" + Dump.newLine());
+     // bw.write("     <th>Archives</th>" + Dump.newLine());
 
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Status</th>" + Dump.newLine());
-      bw.write("     <th>Archives</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
 
-      bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
+      bw.write("  <element>" + Dump.newLine());
       bw.write("     <td>Signed</td>" + Dump.newLine());
       if (!filtered)
       {
-         bw.write("     <td style=\"color: red;\">" + signed + "</td>" + Dump.newLine());
+         bw.write("     <Value>" + signed + "</Value>" + Dump.newLine());
       }
       else
       {
-         bw.write("     <td style=\"color: red; text-decoration: line-through;\">" + signed + "</td>" + Dump.newLine());
+         bw.write("     <Value>" + signed + "</Value>" + Dump.newLine());
       }
-      bw.write("  </tr>" + Dump.newLine());
+      bw.write("  </element>" + Dump.newLine());
 
-      bw.write("  <tr class=\"roweven\">" + Dump.newLine());
+      bw.write("  <element>" + Dump.newLine());
       bw.write("     <td>Unsigned</td>" + Dump.newLine());
       if (!filtered)
       {
-         bw.write("     <td style=\"color: green;\">" + unsigned + "</td>" + Dump.newLine());
+         bw.write("     <Value>" + unsigned + "</Value>" + Dump.newLine());
       }
       else
       {
-         bw.write("     <td style=\"color: green; text-decoration: line-through;\">"
-                  + unsigned + "</td>" + Dump.newLine());
+         bw.write("     <Value>" + unsigned + "</Value>" + Dump.newLine());
       }
-      bw.write("  </tr>" + Dump.newLine());
+      bw.write("  </element>" + Dump.newLine());
 
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
    }
 
    /**
@@ -152,13 +148,13 @@ public class SignReport extends AbstractReport
     */
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
-
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      bw.write("../index.xml" + Dump.newLine());
+    
+     
    }
 
    /**

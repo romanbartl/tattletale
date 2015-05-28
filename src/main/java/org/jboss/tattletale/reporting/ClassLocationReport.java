@@ -28,6 +28,10 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
+import org.jboss.tattletale.reporting.abstracts.AbstractReport;
+import org.jboss.tattletale.reporting.common.ReportSeverity;
+import org.jboss.tattletale.reporting.common.ReportStatus;
+import org.jboss.tattletale.reporting.interfaces.Filter;
 /**
  * Class location report
  *
@@ -70,12 +74,7 @@ public class ClassLocationReport extends AbstractReport
    @Override
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
-
-      bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Class</th>" + Dump.newLine());
-      bw.write("     <th>Jar files</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
 
       boolean odd = true;
 
@@ -93,22 +92,17 @@ public class ClassLocationReport extends AbstractReport
             }
          }
 
-         if (odd)
-         {
-            bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-         }
-         else
-         {
-            bw.write("  <tr class=\"roweven\">" + Dump.newLine());
-         }
-         bw.write("     <td>" + clz + "</td>" + Dump.newLine());
+         bw.write("  <element>" + Dump.newLine());
+         
+        
+         bw.write("     <class>" + clz + "</class>" + Dump.newLine());
          if (!filtered)
          {
-            bw.write("        <td>");
+            bw.write("        <jar_files>");
          }
          else
          {
-            bw.write("        <td style=\"text-decoration: line-through;\">");
+            bw.write("        <jar_files>");
          }
 
          Iterator sit = archives.iterator();
@@ -118,7 +112,7 @@ public class ClassLocationReport extends AbstractReport
             int finalDot = archive.lastIndexOf(".");
             String extension = archive.substring(finalDot + 1);
 
-            bw.write("<a href=\"../" + extension + "/" + archive + ".html\">" + archive + "</a>" + Dump.newLine());
+            bw.write("../" + extension + "/" + archive + ".xml " + archive + Dump.newLine());
 
             if (sit.hasNext())
             {
@@ -126,25 +120,25 @@ public class ClassLocationReport extends AbstractReport
             }
          }
 
-         bw.write("</td>" + Dump.newLine());
-         bw.write("  </tr>" + Dump.newLine());
+         bw.write("</jar_files>" + Dump.newLine());
+         bw.write("  </element>" + Dump.newLine());
 
          odd = !odd;
       }
 
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
    }
 
    @Override
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
 
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p>" + Dump.newLine());
+      bw.write("../index.xml" + Dump.newLine());
+   
    }
 
    /**

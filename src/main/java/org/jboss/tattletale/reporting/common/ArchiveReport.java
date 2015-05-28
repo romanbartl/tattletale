@@ -19,9 +19,10 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.tattletale.reporting;
+package org.jboss.tattletale.reporting.common;
 
 import org.jboss.tattletale.core.Archive;
+import org.jboss.tattletale.reporting.abstracts.AbstractReport;
 
 /**
  * Represents an archive report (JAR, WAR, EAR, ...)

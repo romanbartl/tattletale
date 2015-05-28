@@ -27,7 +27,7 @@ import org.jboss.tattletale.core.NestableArchive;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-
+import org.jboss.tattletale.reporting.common.*;
 
 /**
  * This type of report is to .war files as to {@link JarReport} is to .jar files.
@@ -65,7 +65,7 @@ public class WarReport extends NestableReport
    {
       super (DIRECTORY, ReportSeverity.INFO, nestableArchive);
       StringBuffer sb = new StringBuffer(nestableArchive.getName());
-      setFilename(sb.append(".html").toString());
+      setFilename(sb.append(".xml").toString());
       this.depth = depth;
    }
 
@@ -96,19 +96,17 @@ public class WarReport extends NestableReport
       }
       else
       {
-         bw.write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"" +
-                  "\"http://www.w3.org/TR/html4/loose.dtd\">" + Dump.newLine());
-         bw.write("<html>" + Dump.newLine());
-         bw.write("<head>" + Dump.newLine());
+    	 bw.write("<?xml version=\"1.0\" encoding=\"utf-8\"?> "+ Dump.newLine());
+         bw.write("<main>" + Dump.newLine());
+         bw.write("<info>" + Dump.newLine());
          bw.write("  <title>" + Version.FULL_VERSION + ": " + getName() + "</title>" + Dump.newLine());
-         bw.write("  <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">" + Dump.newLine());
-         bw.write("  <link rel=\"stylesheet\" type=\"text/css\" href=\"");
+         
          for (int i = 1; i <= depth; i++)
          {
             bw.write("../");
          }
-         bw.write("style.css\">" + Dump.newLine());
-         bw.write("</head>" + Dump.newLine());
+        
+         bw.write("</info>" + Dump.newLine());
 
       }
    }
@@ -121,7 +119,7 @@ public class WarReport extends NestableReport
     * @throws IOException if an error occurs
     */
    @Override
-   BufferedWriter getBufferedWriter() throws IOException
+   protected BufferedWriter getBufferedWriter() throws IOException
    {
       return getBufferedWriter(getFilename());
    }

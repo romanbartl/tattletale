@@ -26,6 +26,9 @@ import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import org.jboss.tattletale.reporting.common.SizeComparator;
+import org.jboss.tattletale.reporting.interfaces.Filter;
+
 /**
  * Represents a key filter
  *

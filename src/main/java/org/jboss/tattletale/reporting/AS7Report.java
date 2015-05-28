@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
+import org.jboss.tattletale.reporting.common.*;
 /**
  * Report type that makes use of the {@link org.jboss.tattletale.profiles.ExtendedProfile} to find which module
  * identifiers it needs for the scanned archives (eg: .war, .ear)
@@ -68,13 +68,13 @@ public class AS7Report extends CLSReport
    @Override
    public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
    {
-      bw.write("<body>" + Dump.newLine());
+      bw.write("<reporting>" + Dump.newLine());
       bw.write(Dump.newLine());
 
       bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
 
-      bw.write("<a href=\"../index.html\">Main</a>" + Dump.newLine());
-      bw.write("<p />" + Dump.newLine());
+      bw.write("../index.xml" + Dump.newLine());
+     
    }
 
    /**
@@ -86,10 +86,10 @@ public class AS7Report extends CLSReport
    @Override
    public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
    {
-      bw.write("<table>" + Dump.newLine());
+      bw.write("<elements>" + Dump.newLine());
       bw.write("  <tr>" + Dump.newLine());
-      bw.write("     <th>Archive</th>" + Dump.newLine());
-      bw.write("     <th>JBoss Deployment</th>" + Dump.newLine());
+      //bw.write("     <th>Archive</th>" + Dump.newLine());
+      //bw.write("     <th>JBoss Deployment</th>" + Dump.newLine());
       bw.write("  </tr>" + Dump.newLine());
 
       boolean odd = true;
@@ -104,23 +104,19 @@ public class AS7Report extends CLSReport
          File deploymentXml = buildDeploymentXml(requires, archiveName);
          String path = "./" + archiveName + "/" + deploymentXml.getName();
 
-         if (odd)
-         {
-            bw.write("  <tr class=\"rowodd\">" + Dump.newLine());
-         }
-         else
-         {
-            bw.write("  <tr class=\"roweven\">" + Dump.newLine());
-         }
-         bw.write("     <td><a href=\"../" + extension + "/" + archiveName + ".html\">" +
-               archiveName + "</a></td>" + Dump.newLine());
-         bw.write("     <td><a href=\"" + path + "\">jboss-deployment-structure" +
-               ".xml</a></td>" + Dump.newLine());
-         bw.write("  </tr>" + Dump.newLine());
+         
+         bw.write("  <element>" + Dump.newLine());
+         
+        
+         bw.write("     <Archive>/" +extension + "/" + archiveName + ".xml" +
+               archiveName + "</Archive>" + Dump.newLine());
+         bw.write("     <Jboss_Deployment>" + path + "->jboss-deployment-structure" +
+               ".xml</Jboss_Deployment>" + Dump.newLine());
+         bw.write("  </element>" + Dump.newLine());
 
          odd = !odd;
       }
-      bw.write("</table>" + Dump.newLine());
+      bw.write("</elements>" + Dump.newLine());
    }
 
    private Set<String> getProvides(Archive a)

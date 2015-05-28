@@ -60,15 +60,15 @@ import org.jboss.tattletale.reporting.OSGiReport;
 import org.jboss.tattletale.reporting.PackageDependantsReport;
 import org.jboss.tattletale.reporting.PackageDependsOnReport;
 import org.jboss.tattletale.reporting.PackageMultipleJarsReport;
-import org.jboss.tattletale.reporting.Report;
-import org.jboss.tattletale.reporting.ReportSeverity;
-import org.jboss.tattletale.reporting.ReportStatus;
+import org.jboss.tattletale.reporting.common.ReportSeverity;
+import org.jboss.tattletale.reporting.common.ReportStatus;
 import org.jboss.tattletale.reporting.SealedReport;
 import org.jboss.tattletale.reporting.SignReport;
 import org.jboss.tattletale.reporting.TransitiveDependantsReport;
 import org.jboss.tattletale.reporting.TransitiveDependsOnReport;
 import org.jboss.tattletale.reporting.UnusedJarReport;
 import org.jboss.tattletale.reporting.WarReport;
+import org.jboss.tattletale.reporting.interfaces.Report;
 import org.jboss.tattletale.utils.Configuration;
 
 import java.io.File;
@@ -611,7 +611,7 @@ public class Main
 
          if (scanner != null)
          {
-            Archive archive = scanner.scan(file, gProvides, known, blacklistedSet); //java.ioIOEception: type 18
+            Archive archive = scanner.scan(file, gProvides, known, blacklistedSet);
             if (archive != null)
             {
                SortedSet<Location> locations = locationsMap.get(archive.getName());
@@ -989,8 +989,8 @@ public class Main
 
 
       String outputDir = reportSetBuilder.getOutputDir();
-      Dump.generateIndex(dependencyReportSet, generalReportSet, archiveReports, customReportSet, outputDir);
-      Dump.generateCSS(outputDir);
+      //Dump.generateIndex(dependencyReportSet, generalReportSet, archiveReports, customReportSet, outputDir);
+      //Dump.generateCSS(outputDir);
 
       if (failOnInfo || failOnWarn || failOnError)
       {
@@ -1042,7 +1042,8 @@ public class Main
    /** The usage method */
    private static void usage()
    {
-      System.out.println("Usage: Tattletale [-exclude=<excludes>]" + " <source>[#<source>]* [output-directory]");
+      System.out.println("Usage: Tattletale [-exclude=<excludes>] [DOD=]" + " <source>[#<source>]* [output-directory]");
+      System.out.println("DOD= = Directory Output Delete");
    }
 
    /**
@@ -1095,6 +1096,7 @@ public class Main
             {
                main.setDeleteOutputDirectory(true);
                arg++;
+              
             }
             main.setSource(args[arg]);
             main.setDestination(args.length > arg + 1 ? args[arg + 1] : ".");
@@ -1345,8 +1347,9 @@ public class Main
          			}
          		}
          		else
-         		{
-         			throw new IOException("Directory is not empty!");
+         		{	
+         			usage();
+         			throw new IOException("Directory is not empty! Check you directory if you deletle file use \"DOD=\" or change directory.");
          		}
          	 }
          }
