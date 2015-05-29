@@ -57,70 +57,8 @@ public abstract class AS7ReportAbstract extends CLSReportAbstract
    {
       super(NAME, ReportSeverity.INFO, NAME, DIRECTORY);
    }
-
-
-   /*
-    * Build the header of the html file.
-    *
-    * @param bw the writer to use
-    * @throws IOException - if there is an issue with the html writing
-    
-   @Override
-   public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
-   {
-      bw.write("<reporting>" + Dump.newLine());
-      bw.write(Dump.newLine());
-
-      bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
-
-      bw.write("../index.xml" + Dump.newLine());
-     
-   }
-*/
-   /*
-    * Write the main html content.
-    *
-    * @param bw the writer to use
-    * @throws IOException - if there is an issue with the html writing
-    
-   @Override
-   public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
-   {
-      bw.write("<elements>" + Dump.newLine());
-      bw.write("  <tr>" + Dump.newLine());
-      //bw.write("     <th>Archive</th>" + Dump.newLine());
-      //bw.write("     <th>JBoss Deployment</th>" + Dump.newLine());
-      bw.write("  </tr>" + Dump.newLine());
-
-      boolean odd = true;
-      for (Archive archive : archives)
-      {
-         Set<String> provides = getProvides(archive);
-         Set<String> requires = getRequires(archive);
-         requires.removeAll(provides);
-         String archiveName = archive.getName();
-         int finalDot = archiveName.lastIndexOf(".");
-         String extension = archiveName.substring(finalDot + 1);
-         File deploymentXml = buildDeploymentXml(requires, archiveName);
-         String path = "./" + archiveName + "/" + deploymentXml.getName();
-
-         
-         bw.write("  <element>" + Dump.newLine());
-         
-        
-         bw.write("     <Archive>/" +extension + "/" + archiveName + ".xml" +
-               archiveName + "</Archive>" + Dump.newLine());
-         bw.write("     <Jboss_Deployment>" + path + "->jboss-deployment-structure" +
-               ".xml</Jboss_Deployment>" + Dump.newLine());
-         bw.write("  </element>" + Dump.newLine());
-
-         odd = !odd;
-      }
-      bw.write("</elements>" + Dump.newLine());
-   }
-*/
    
-   private Set<String> getProvides(Archive a)
+   protected Set<String> getProvides(Archive a)
    {
       Set<String> provides = new HashSet<String>();
       if (a instanceof NestableArchive)
@@ -141,7 +79,7 @@ public abstract class AS7ReportAbstract extends CLSReportAbstract
       return provides;
    }
 
-   private Set<String> getRequires(Archive a)
+   protected Set<String> getRequires(Archive a)
    {
       Set<String> requires = new HashSet<String>();
       if (a instanceof NestableArchive)
@@ -161,57 +99,5 @@ public abstract class AS7ReportAbstract extends CLSReportAbstract
       }
       return requires;
    }
-/*
-   private File buildDeploymentXml(Set<String> requires, String archiveName) throws IOException
-   {
-      File deployedDir = new File(getOutputDirectory(), archiveName);
-      deployedDir.mkdirs();
-      File outputXml = new File(deployedDir.getAbsolutePath() + File.separator + "jboss-deployment-structure.xml");
-      FileWriter fw = new FileWriter(outputXml);
-      BufferedWriter bw = new BufferedWriter(fw, 8192);
 
-      bw.write("<?xml version=\"1.0\"?>" + Dump.newLine());
-      bw.write("<jboss-deployment-structure>" + Dump.newLine());
-      bw.write("  <deployment>" + Dump.newLine());
-      bw.write("     <dependencies>" + Dump.newLine());
-
-      ExtendedProfile as7Profile = new JBossAS7Profile();
-      SortedSet<String> moduleIdentifiers = new TreeSet<String>();
-
-      for (String requiredClass : requires)
-      {
-         String moduleIdentifier = as7Profile.getModuleIdentifier(requiredClass);
-         if (moduleIdentifier != null)
-         {
-            moduleIdentifiers.add(moduleIdentifier);
-         }
-         else
-         {
-            for (Profile p : getKnown())
-            {
-               if (p.doesProvide(requiredClass))
-               {
-                  moduleIdentifier = p.getModuleIdentifier();
-                  if (moduleIdentifier != null)
-                  {
-                     moduleIdentifiers.add(moduleIdentifier);
-                  }
-               }
-            }
-         }
-      }
-
-      for (String identifier : moduleIdentifiers)
-      {
-         bw.write("        <module name=\"" + identifier + "\"/>" + Dump.newLine());
-      }
-      bw.write("     </dependencies>" + Dump.newLine());
-      bw.write("  </deployment>" + Dump.newLine());
-      bw.write("</jboss-deployment-structure>" + Dump.newLine());
-      bw.flush();
-      bw.close();
-
-      return outputXml;
-   }
-*/
 }

@@ -44,10 +44,10 @@ import org.jboss.tattletale.reporting.common.*;
 public abstract class ClassDependsOnReportAbstract extends CLSReportAbstract
 {
    /** NAME */
-   private static final String NAME = "Class Depends On";
+   public static final String NAME = "Class Depends On";
 
    /** DIRECTORY */
-   private static final String DIRECTORY = "classdependson";
+   public static final String DIRECTORY = "classdependson";
 
 
    /** Constructor */
@@ -55,81 +55,7 @@ public abstract class ClassDependsOnReportAbstract extends CLSReportAbstract
    {
       super(DIRECTORY, ReportSeverity.INFO, NAME, DIRECTORY);
    }
-
-
-   /**
-    * write out the report's content
-    *
-    * @param bw the writer to use
-    * @throws IOException if an error occurs
-   
-   public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
-   {
-      bw.write("<elements>" + Dump.newLine());
-
-      SortedMap<String, SortedSet<String>> result = new TreeMap<String, SortedSet<String>>();
-
-      for (Archive archive : archives)
-      {
-         SortedMap<String, SortedSet<String>> classDependencies = getClassDependencies(archive);
-
-         Iterator<Map.Entry<String, SortedSet<String>>> dit = classDependencies.entrySet().iterator();
-         while (dit.hasNext())
-         {
-            Map.Entry<String, SortedSet<String>> entry = dit.next();
-            String clz = entry.getKey();
-            SortedSet<String> deps = entry.getValue();
-
-            SortedSet<String> newDeps = new TreeSet<String>();
-
-            for (String dep : deps)
-            {
-               if (!dep.equals(clz))
-               {
-                  newDeps.add(dep);
-               }
-            }
-
-            result.put(clz, newDeps);
-         }
-      }
-
-      Iterator<Map.Entry<String, SortedSet<String>>> rit = result.entrySet().iterator();
-      boolean odd = true;
-
-      while (rit.hasNext())
-      {
-         Map.Entry<String, SortedSet<String>> entry = rit.next();
-         String clz = entry.getKey();
-         SortedSet<String> deps = entry.getValue();
-
-         bw.write("  <element>" + Dump.newLine());
-       
-         bw.write("     <class>" + clz + "</class>" + Dump.newLine());
-         bw.write("     <Dependson>");
-
-         Iterator<String> sit = deps.iterator();
-         while (sit.hasNext())
-         {
-            String dep = sit.next();
-            bw.write(dep);
-
-            if (sit.hasNext())
-            {
-               bw.write(", ");
-            }
-         }
-
-         bw.write("</Dependson>" + Dump.newLine());
-         bw.write("  </element>" + Dump.newLine());
-
-         odd = !odd;
-      }
-
-      bw.write("</elements>" + Dump.newLine());
-   }
-*/
-   private SortedMap<String, SortedSet<String>> getClassDependencies(Archive archive)
+   protected SortedMap<String, SortedSet<String>> getClassDependencies(Archive archive)
    {
       SortedMap<String, SortedSet<String>> classDeps = new TreeMap<String, SortedSet<String>>();
 
@@ -151,23 +77,4 @@ public abstract class ClassDependsOnReportAbstract extends CLSReportAbstract
       }
       return classDeps;
    }
-
-
-   /**
-    * write out the header of the report's content
-    *
-    * @param bw the writer to use
-    * @throws IOException if an error occurs
-    
-   public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
-   {
-      bw.write("<reporting>" + Dump.newLine());
-      bw.write(Dump.newLine());
-
-      bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
-
-      bw.write("../index.xml" + Dump.newLine());
-      
-   }
-   */
 }

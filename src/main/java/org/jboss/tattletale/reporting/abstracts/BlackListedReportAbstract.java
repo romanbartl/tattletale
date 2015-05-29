@@ -44,10 +44,10 @@ import org.jboss.tattletale.reporting.interfaces.Filter;
 public abstract class BlackListedReportAbstract extends AbstractReport
 {
    /** NAME */
-   private static final String NAME = "Black listed";
+   protected static final String NAME = "Black listed";
 
    /** DIRECTORY */
-   private static final String DIRECTORY = "blacklisted";
+   protected static final String DIRECTORY = "blacklisted";
 
    /** Constructor */
    public BlackListedReportAbstract()
@@ -55,102 +55,7 @@ public abstract class BlackListedReportAbstract extends AbstractReport
       super(DIRECTORY, ReportSeverity.ERROR, NAME, DIRECTORY);
    }
 
-   /**
-    * write out the report's content
-    *
-    * @param bw the writer to use
-    * @throws IOException if an error occurs
-    
-   public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
-   {
-      bw.write("<elements>" + Dump.newLine());
-
-      
-      //bw.write("     <th>Archive</th>" + Dump.newLine());
-      //bw.write("     <th>Usage</th>" + Dump.newLine());
-      
-
-      boolean odd = true;
-
-      for (Archive archive : archives)
-      {
-         String archiveName = archive.getName();
-         int finalDot = archiveName.lastIndexOf(".");
-         String extension = archiveName.substring(finalDot + 1);
-
-         SortedMap<String, SortedSet<String>> blacklisted = getBlackListedDeps(archive);
-         boolean include = false;
-         boolean filtered = isFiltered(archive.getName());
-
-         if (blacklisted != null && blacklisted.size() > 0)
-         {
-            include = true;
-
-            if (!filtered)
-            {
-               status = ReportStatus.RED;
-            }
-         }
-
-         if (include)
-         {
-            
-            bw.write("  <element>" + Dump.newLine());
-            
-           
-            bw.write("     <Archive>/" + extension + "/" + archiveName + ".xml"
-                  + archive.getName() + "</Archive>" + Dump.newLine());
-            bw.write("     <Usage>");
-
-            bw.write("       <table>" + Dump.newLine());
-
-            for (Map.Entry<String, SortedSet<String>> stringSortedSetEntry :
-                  blacklisted.entrySet())
-            {
-
-               String pkg = stringSortedSetEntry.getKey();
-               SortedSet<String> blpkgs = stringSortedSetEntry.getValue();
-
-               bw.write("      <tr>" + Dump.newLine());
-
-               bw.write("        <td>" + pkg + "</td>" + Dump.newLine());
-
-               if (!filtered)
-               {
-                  bw.write("       <td>");
-               }
-               else
-               {
-                  bw.write("       <td>");
-               }
-
-               for (String blp : blpkgs)
-               {
-                  bw.write(blp + "<br>");
-               }
-
-               bw.write("</td>" + Dump.newLine());
-
-               bw.write("      </tr>" + Dump.newLine());
-            }
-
-            bw.write("       </table>" + Dump.newLine());
-
-            bw.write("</Usage>" + Dump.newLine());
-            bw.write("  </element>" + Dump.newLine());
-
-            odd = !odd;
-
-
-         }
-
-         
-      }
-      bw.write("</elements>" + Dump.newLine());
-   }
-*/
-   
-   private SortedMap<String, SortedSet<String>> getBlackListedDeps(Archive a)
+   protected SortedMap<String, SortedSet<String>> getBlackListedDeps(Archive a)
    {
       SortedMap<String, SortedSet<String>> deps = new TreeMap<String, SortedSet<String>>();
       if (a instanceof NestableArchive)
@@ -170,30 +75,6 @@ public abstract class BlackListedReportAbstract extends AbstractReport
       return deps;
    }
 
-   /*
-    * write out the header of the report's content
-    *
-    * @param bw the writer to use
-    * @throws IOException if an error occurs
-    
-   public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
-   {
-      bw.write("<reporting>" + Dump.newLine());
-      bw.write(Dump.newLine());
-
-      bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
-
-      bw.write("../index.xml" + Dump.newLine());
-     
-   }
-
-   /*
-   /**
-    
-    * Create filter
-    *
-    * @return The filter
-    */
    @Override
    protected Filter createFilter()
    {

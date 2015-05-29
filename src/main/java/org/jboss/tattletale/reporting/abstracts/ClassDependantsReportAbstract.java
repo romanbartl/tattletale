@@ -44,10 +44,10 @@ import org.jboss.tattletale.reporting.common.ReportSeverity;
 public abstract class ClassDependantsReportAbstract extends CLSReportAbstract
 {
    /** NAME */
-   private static final String NAME = "Class Dependants";
+   public static final String NAME = "Class Dependants";
 
    /** DIRECTORY */
-   private static final String DIRECTORY = "classdependants";
+   public static final String DIRECTORY = "classdependants";
 
 
    /** Constructor */
@@ -56,111 +56,7 @@ public abstract class ClassDependantsReportAbstract extends CLSReportAbstract
       super(DIRECTORY, ReportSeverity.INFO, NAME, DIRECTORY);
    }
 
-
-   /**
-    * write out the report's content
-    *
-    * @param bw the writer to use
-    * @throws IOException if an error occurs
-    
-   public void writeHtmlBodyContent(BufferedWriter bw) throws IOException
-   {
-      bw.write("<elements>" + Dump.newLine());
-
-
-      SortedMap<String, SortedSet<String>> result = new TreeMap<String, SortedSet<String>>();
-
-      boolean odd = true;
-
-      for (Archive archive : archives)
-      {
-         SortedMap<String, SortedSet<String>> classDependencies = getClassDependencies(archive);
-
-         Iterator<Map.Entry<String, SortedSet<String>>> dit = classDependencies.entrySet().iterator();
-         while (dit.hasNext())
-         {
-            Map.Entry<String, SortedSet<String>> entry = dit.next();
-            String clz = entry.getKey();
-            SortedSet<String> clzDeps = entry.getValue();
-
-            Iterator<String> sit = clzDeps.iterator();
-            while (sit.hasNext())
-            {
-               String dep = sit.next();
-
-               if (!dep.equals(clz))
-               {
-                  boolean include = true;
-
-                  Iterator<Profile> kit = getKnown().iterator();
-                  while (include && kit.hasNext())
-                  {
-                     Profile profile = kit.next();
-
-                     if (profile.doesProvide(dep))
-                     {
-                        include = false;
-                     }
-                  }
-
-                  if (include)
-                  {
-                     SortedSet<String> deps = result.get(dep);
-
-                     if (deps == null)
-                     {
-                        deps = new TreeSet<String>();
-                     }
-
-                     deps.add(clz);
-
-                     result.put(dep, deps);
-                  }
-               }
-            }
-         }
-      }
-
-      Iterator<Map.Entry<String, SortedSet<String>>> rit = result.entrySet().iterator();
-
-      while (rit.hasNext())
-      {
-         Map.Entry<String, SortedSet<String>> entry = rit.next();
-         String clz = entry.getKey();
-         SortedSet<String> deps = entry.getValue();
-
-         if (deps != null && deps.size() > 0)
-         {
-            
-            bw.write("  <element>" + Dump.newLine());
-            
-            
-            bw.write("     <class>" + clz + "</class>" + Dump.newLine());
-            bw.write("     <Dependants>");
-
-            Iterator<String> sit = deps.iterator();
-            while (sit.hasNext())
-            {
-               String dep = sit.next();
-               bw.write(dep);
-
-               if (sit.hasNext())
-               {
-                  bw.write("; ");
-               }
-            }
-
-            bw.write("</Dependants>" + Dump.newLine());
-            bw.write("  </element>" + Dump.newLine());
-
-            odd = !odd;
-         }
-      }
-
-      bw.write("</elements>" + Dump.newLine());
-   }
-*/
-   private SortedMap<String, SortedSet<String>> getClassDependencies(Archive archive)
+   protected SortedMap<String, SortedSet<String>> getClassDependencies(Archive archive)
    {
       SortedMap<String, SortedSet<String>> classDeps = new TreeMap<String, SortedSet<String>>();
 
@@ -182,23 +78,6 @@ public abstract class ClassDependantsReportAbstract extends CLSReportAbstract
       }
       return classDeps;
    }
-
-   /**
-    * write out the header of the report's content
-    *
-    * @param bw the writer to use
-    * @throws IOException if an errror occurs
-    
-   public void writeHtmlBodyHeader(BufferedWriter bw) throws IOException
-   {
-      bw.write("<reporting>" + Dump.newLine());
-      bw.write(Dump.newLine());
-
-      bw.write("<h1>" + NAME + "</h1>" + Dump.newLine());
-
-      bw.write("../index.xml" + Dump.newLine());
-   }
-   */
 }
 
 
